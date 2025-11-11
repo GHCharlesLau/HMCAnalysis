@@ -1,0 +1,477 @@
+---
+title: "HMCvsHHC"
+author: "Charles"
+format: html
+chunk_output_type: inline
+toc: true
+---
+
+# Examining Effects of HMC and Labels on Feeling Heard and Conversational Engagement
+
+-   This section will examine the effects of HMC and partner labels on people's feelings of being heard (feeling heard) and conversational engagement under various contexts (i.e., emotional tasks vs. functional tasks).
+
+-   Hypotheses:
+
+    -   H1: In contrast to HHC, HMC leads to more conversational engagement.
+
+    -   H2: Partner labels moderate the relationship between partnership (HMC vs. HHC) and conversational engagement.
+
+    -   H3: Task types influence the moderating effect of partner labels on the relationship between partnership and conversational engagement.
+
+    -   H4: Feeling heard mediates the relationship between partnership and conversational engagement.
+
+    -   H5: Partner labels moderate (a) the direct effect and (b) the indirect effect of partnership on conversational engagement through feeling heard.
+
+## Data
+
+Load data of the user level.
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(dplyr)
+library(psych)
+library(corrplot)
+library(lavaan)
+library(processR)
+library(jtools)
+library(interactions)
+library(ggplot2)
+library(patchwork)
+library(ggpubr)
+library(mediation)
+```
+
+```{r}
+file_path <- "data/data_UserAsObservation.csv"
+data <- read_csv(file_path)
+```
+
+Extract users that completed both rounds of conversations and did not chat with bots in the 2nd round.
+
+```{r}
+data_ext <- data |> 
+  filter(finish_both_con == 1 & backup_bot == 0) |> 
+  janitor::clean_names() |>   # turn all variable names into snake case at once
+  rename(
+    soa_1 = so_a_1,
+    soa_2 = so_a_2,
+    soa_3 = so_a_3,
+    soa_4 = so_a_4,
+    task = user_task_type,
+    partnership = user_partnership,
+    label = user_partner_label,
+  ) |> 
+  mutate(
+    task = factor(task, levels = c("emotionTask", "functionTask")),
+    partnership = factor(partnership, levels = c("HMC", "HHC")),
+    label = factor(label, levels = c("human", "chatbot")),
+  )
+
+dim(data_ext)
+# glimpse(data_ext)
+describe((data_ext))
+```
+
+## Reliability & Validity
+
+```{r}
+# Descriptive statistics
+table(data_ext$gender)
+describe(data_ext$age)
+table(data_ext$race) |> prop.table()
+table(data_ext$partisanship) |> prop.table()
+table(data_ext$education) |> prop.table()
+describe(data_ext$ai_usage)
+describe(data_ext$ai_literacy)
+```
+
+```{r}
+# Confirmatory Factor analysis
+# Feeling heard, sense of agency, conversational engagement, AI literacy
+# ail =~ ail_1 + ail_2 + ail_3 + ail_4
+# soa =~ soa_1 + soa_2 + soa_3 + soa_4
+
+cfa_model <- '
+  fh =~ fh_1 + fh_2 + fh_3 + fh_4
+  ce =~ ce_1 + ce_2 + ce_3 +ce_4
+'
+
+fit <- cfa(cfa_model, data = data_ext)
+summary(fit, fit.measures = TRUE)
+```
+
+```{r}
+# Reliability
+alpha(data_ext[, c("fh_1", "fh_2", "fh_3", "fh_4")])
+alpha(data_ext[, c("soa_1", "soa_2", "soa_3", "soa_4")])
+alpha(data_ext[, c("ce_1", "ce_2", "ce_3", "ce_4")])
+# alpha(data_ext[, c("ail_1", "ail_2", "ail_3", "ail_4")])
+```
+
+```{r}
+# DV statistics
+describe(data_ext[, c("feeling_heard", "sense_of_agency", "con_engage")])
+```
+
+```{r}
+# Create dummy variables
+data_ext$HMC <- ifelse(data_ext$partnership == "HMC", 1, 0)
+data_ext$bot_labeled <- ifelse(data_ext$label == "chatbot", 1, 0)
+data_ext$emotion_task <- ifelse(data_ext$task == "emotionTask", 1, 0)
+```
+
+## Main Effect: OLS Regression
+
+-   IV: partnership (HMC), label (bot_labeled), task (emotion_task);
+
+-   DV: con_engage
+
+-   Mediator: feeling_heard
+
+Results:
+
+-   Partnership and partner labels exerted significant main effect on conversational engagement. H1 was supported.
+
+-   2-way interaction: The effect of partnership on conversational engagement was moderated by partner labels.
+
+    -   Communicating with an artificial agent (a chatbot partner) was more likely to induce conversational engagement once the partner was labeled as a chatbot compared to human labeling. H2 was supported.
+
+-   No 3-way interaction effect. H3 was not supported.
+
+```{r}
+#| label: main-effect
+
+fit1 <- lm(con_engage ~ HMC + bot_labeled + emotion_task, data = data_ext)
+summ(fit1)
+```
+
+## Moderation
+
+```{r}
+#| label: 2way-interaction-effect
+
+fit2 <- lm(con_engage ~ HMC * bot_labeled + emotion_task, data = data_ext)
+summ(fit2)
+
+fit3 <- lm(con_engage ~ HMC * emotion_task + bot_labeled, data = data_ext)
+summ(fit3)
+
+fit4 <- lm(con_engage ~ HMC + bot_labeled * emotion_task, data = data_ext)
+summ(fit4)
+```
+
+```{r}
+#| warning: false
+
+# Incorrect
+# ggplot(data_ext, 
+#        aes(y = con_engage, x = HMC, color = label)) +
+#   geom_smooth(method = "loess", formula = "y ~ x") +
+#   # facet_wrap(~label) +
+#   theme_bw() +
+#   xlab("Partnership") +
+#   ylab("Conversational Engagement") +
+#   labs(color = "Partner Label")
+
+# ggsave("output/inter_plot_conEngage.jpg", width = 8, height = 6, dpi = 300)
+```
+
+```{r}
+#| label: simple-slopes-hmcLabel (ce as dv)
+
+res_simslopes <- sim_slopes(fit2, pred = HMC, modx = bot_labeled, jnplot = TRUE)
+print(res_simslopes)
+
+p1 <- res_simslopes$jnplot + 
+  theme_apa() +
+  labs(title = "", x = "Partner Label", y = "Slope of Partner Type") +
+  theme(legend.position = "none")
+# p1 <- johnson_neyman(fit2, pred = HMC, modx = bot_labeled, title = "")[3]$plot + 
+#   theme(legend.position = "bottom")  # The result is different from sim_slopes function?
+
+p2 <- interact_plot(fit2, pred = HMC, modx = bot_labeled, interval = TRUE, modx.values = c(1, 0), modx.labels = c("AI Chatbot Label", "Human Label"), legend.main = "", colors = "CUD") +
+  theme_apa() + 
+  ylab("Conversational Engagement") + 
+  xlab("Partner Type") +
+  scale_x_continuous(breaks = c(0, 1), labels = c("Human", "AI Chatbot")) +
+  theme(legend.position = "right")
+
+p1 + p2 +
+  plot_annotation(tag_levels = "A")
+
+# ggsave("output/inter_plot_HMClabel_conEngage.jpg", width = 8, height = 6, dpi = 300)
+```
+
+```{r}
+#| label: simple-slopes-taskLabel (ce as dv)
+
+res_simslopes2 <- sim_slopes(fit4, pred = emotion_task, modx = bot_labeled, jnplot = TRUE)
+print(res_simslopes2)
+
+p1a <- res_simslopes2$jnplot + 
+  theme_apa() +
+  labs(title = "", x = "Partner Label", y = "Slope of Tasks") +
+  theme(legend.position = "bottom")
+
+p2b <- interact_plot(fit4, pred = emotion_task, modx = bot_labeled, interval = TRUE, modx.values = c(1, 0), modx.labels = c("AI Chatbot Label", "Human Label"), legend.main = "", colors = "CUD") +
+  theme_apa() + 
+  ylab("Conversationa Engagement") + 
+  xlab("Task") +
+  scale_x_continuous(breaks = c(0, 1), labels = c("Functional", "Emotional"))
+  theme(legend.position = "bottom")
+
+(p1 + p2 + p1a + p2b) +
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A") &
+  theme(legend.position = "right")
+
+# ggsave("output/inter_plot_twoInter_conEngage.jpg", width = 10, height = 6, dpi = 300)
+```
+
+## Moderated Moderation
+
+-   Label as a moderator; Task as a moderator's moderator.
+
+```{r}
+# model 3
+labels <- list(Y = "conversational engagement", X = "partnership", W = "label", Z = "task")
+pmacroModel(no = 3, labels = labels)
+```
+
+```{r}
+#| label: 3way-interaction-effect
+
+fit5 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + HMC:bot_labeled:emotion_task, data = data_ext)
+summ(fit5)
+```
+
+Results:
+
+-   No moderated moderation. H3 was not supported.
+
+```{r}
+#| results: asis
+
+coef_names <-  c(
+"Partnership: HMC" = "HMC", "Bot_labeled" = "bot_labeled", "Emotion_task" = "emotion_task", "HMC × bot_labeled" = "HMC:bot_labeled", "HMC × emotion_task" = "HMC:emotion_task", "Bot_labeled × emotion_task" = "bot_labeled:emotion_task", "HMC × bot_labeled × emotion_task" = "HMC:bot_labeled:emotion_task", "Constant" = "(Intercept)")
+
+jtools::export_summs(fit1, fit2, fit3, fit4, fit5, robust = "HC3", coefs = coef_names, to.file = "xlsx", file.name = "output/main&2way_conEngage.xlsx")
+```
+
+## Mediation: Feeling Heard
+
+-   Feeling heard as a mediator.
+-   DV: Conversational Engagement
+
+```{r}
+#| label: medModels-feeling_heard
+
+# Traditional way: 3-step
+# a path
+fit6 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task, data = data_ext)
+summ(fit6)
+
+fit7 <- lm(feeling_heard ~ HMC*bot_labeled + emotion_task, data = data_ext)
+summ(fit7)
+
+# b, c' path
+fit8 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + feeling_heard, data = data_ext)
+summ(fit8)
+
+fit9 <- lm(con_engage ~ HMC*bot_labeled + emotion_task + feeling_heard, data = data_ext)
+summ(fit9)
+
+export_summs(fit6, fit7, fit8, fit9, 
+             robust = "HC3", to.file = "xlsx", file.name = "output/ce&fh.xlsx")
+```
+
+-   Conduct simple slope analysis on the interaction effect of partnership (a.k.a., partner types) and partner labels over feeling heard.
+
+```{r}
+#| label: simple-slopes-hmcLabel (fh as dv)
+
+res_simslopes3 <- sim_slopes(fit7, pred = HMC, modx = bot_labeled, jnplot = TRUE)
+# print(res_simslopes3)
+
+p5 <- res_simslopes3$jnplot + 
+  theme_apa() +
+  labs(title = "", x = "Partner Label", y = "Slope of Partner Type") +
+  theme(legend.position = "right")
+
+p6 <- interact_plot(fit7, pred = HMC, modx = bot_labeled, interval = TRUE, modx.values = c(1, 0), modx.labels = c("AI Chatbot Label", "Human Label"), legend.main = "", colors = "CUD") +
+  theme_apa() + 
+  ylab("Feeling Heard") + 
+  xlab("Partner Type") +
+  scale_x_continuous(breaks = c(0, 1), labels = c("Human", "AI Chatbot"))
+  theme(legend.position = "right")
+
+p5 + p6 +
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A")
+ggsave("output/inter_plot_HMClabel_feelHeard.jpg", width = 8, height = 4, dpi = 300)
+```
+
+-   Next, Use the `mediation` package developed by Imai et al. (2010) to examine mediation and moderated mediation.
+
+```{r}
+#| label: overall-med
+
+# Overall mediation of feeling heard
+med_fit <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task, data = data_ext)
+out_fit <- lm(con_engage ~ feeling_heard + HMC + bot_labeled + emotion_task, data = data_ext)
+
+set.seed(123)
+med_overall <- mediate(med_fit, out_fit, treat = "HMC", mediator = "feeling_heard", sims = 10000, boot = TRUE, boot.ci.type = "bca")
+summary(med_overall)
+```
+
+Results:
+
+-   Indirect effects of the partnership on conversational engagement via feeling heard. H4 was supported.
+
+## Moderated Mediation
+
+-   Label as a moderator, feeling heard as a mediator.
+
+```{r}
+#| label: mod-med
+
+# Moderated mediation
+med_fit <- lm(feeling_heard ~ HMC * bot_labeled + emotion_task, data = data_ext)
+out_fit <- lm(con_engage ~ feeling_heard + HMC * bot_labeled + feeling_heard * bot_labeled + emotion_task, data = data_ext)
+
+set.seed(123)
+# covariates refer to levels of moderators
+med_botLabel <- mediate(med_fit, out_fit, treat = "HMC", mediator = "feeling_heard", covariates = list(bot_labeled=1), sims = 10000, boot = TRUE, boot.ci.type = "bca")
+summary(med_botLabel)
+
+med_humanLabel <- mediate(med_fit, out_fit, treat = "HMC", mediator = "feeling_heard", covariates = list(bot_labeled=0), sims = 10000, boot = TRUE, boot.ci.type = "bca")
+summary(med_humanLabel)
+```
+
+Results:
+
+-   Feeling heard mediate the effect of partnership on con engagement.
+
+-   Labels moderated the indirect effect of partnership on con engagement via feeling heard. H5 was supported.
+
+```{r}
+# Difference between con engagement among two levels of labels (no need actually)
+set.seed(123)
+med_init <- mediate(med_fit, out_fit, treat = "HMC", mediator = "feeling_heard", sims = 2)
+test.modmed(med_init, covariates.1 = list(bot_labeled = 1), covariates.2 = list(bot_labeled = 0), sims = 10000)
+```
+
+# Integrate AI-Related Vars
+
+-   Integrate AI use and AI literacy as key variables.
+
+-   Regard them as moderators rather than mediators because they were given before our experiment, which means AI use and AI literacy were observed rather than manipulated.
+
+## Correlation
+
+```{r}
+#| label: correlation
+
+# vars: ai_usage, ai_literacy, feeling_heard, con_engage
+
+num_vars <- data_ext[, c("ai_usage", "ai_literacy", "feeling_heard", "con_engage")]
+
+cor_res <- psych::corr.test(num_vars)
+print(cor_res, short = FALSE)
+
+# viz
+corrplot(as.matrix(cor_res$r), 
+         method = "color", 
+         type = "upper", 
+         order = "hclust", 
+         tl.cex = 0.8,
+         tl.col = "black",
+         tl.srt = 0
+         )
+```
+
+## Regression
+
+-   Results:
+
+    -   AI literacy was significantly positively associated with feeling heard and conversational engagement.
+
+    -   However, we found no moderating effect of both AI usage and AI literacy on relationships between IVs and DVs.
+
+```{r}
+# Mean centering: Mean-centered moderators to make it explainable readily
+
+data_ext$ai_usage_c <- scale(data_ext$ai_usage, center = T, scale = F)
+data_ext$ai_literacy_c <- scale(data_ext$ai_literacy, center = T, scale = F)
+```
+
+### Feeling Heard as DV
+
+```{r}
+#| label: fh_as_dv
+
+# feeling_heard as dv
+fitA <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c, data = data_ext)
+summ(fitA)
+```
+
+```{r}
+# Interaction: AI usage as a moderator
+fitB1 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy + HMC:ai_usage_c, data = data_ext)
+summ(fitB1)
+
+fitB2 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage + ai_literacy + bot_labeled:ai_usage_c, data = data_ext)
+summ(fitB2)
+
+fitB3 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage + ai_literacy + emotion_task:ai_usage_c, data = data_ext)
+summ(fitB3)
+```
+
+```{r}
+# interaction: AI literacy as a moderator
+fitC1 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy + HMC:ai_literacy_c, data = data_ext)
+summ(fitC1)
+
+fitC2 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage + ai_literacy + bot_labeled:ai_literacy_c, data = data_ext)
+summ(fitC2)
+
+fitC3 <- lm(feeling_heard ~ HMC + bot_labeled + emotion_task + ai_usage + ai_literacy + emotion_task:ai_literacy_c, data = data_ext)
+summ(fitC3)
+```
+
+-   No interaction effect was found.
+
+### Conversational Engagement as DV
+
+```{r}
+# con_engage as dv
+fitD <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c, data = data_ext)
+summ(fitD)
+```
+
+```{r}
+# interactions: AI usage as a moderator
+fitE1 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + HMC:ai_usage_c, data = data_ext)
+summ(fitE1)
+
+fitE2 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + bot_labeled:ai_usage_c, data = data_ext)
+summ(fitE2)
+
+fitE3 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + emotion_task:ai_usage_c, data = data_ext)
+summ(fitE3)
+```
+
+```{r}
+# interactions: AI literacy as a moderator
+fitF1 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + HMC:ai_literacy_c, data = data_ext)
+summ(fitF1)
+
+fitF2 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + bot_labeled:ai_literacy_c, data = data_ext)
+summ(fitF2)
+
+fitF3 <- lm(con_engage ~ HMC + bot_labeled + emotion_task + ai_usage_c + ai_literacy_c + emotion_task:ai_literacy_c, data = data_ext)
+summ(fitF3)
+```
