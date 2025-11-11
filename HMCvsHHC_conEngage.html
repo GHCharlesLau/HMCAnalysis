@@ -82,7 +82,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
-  <ul>
+  <ul class="collapse">
   <li><a href="#examining-effects-of-hmc-and-labels-on-feeling-heard-and-conversational-engagement" id="toc-examining-effects-of-hmc-and-labels-on-feeling-heard-and-conversational-engagement" class="nav-link active" data-scroll-target="#examining-effects-of-hmc-and-labels-on-feeling-heard-and-conversational-engagement">Examining Effects of HMC and Labels on Feeling Heard and Conversational Engagement</a>
   <ul class="collapse">
   <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
@@ -96,11 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#integrate-ai-related-vars" id="toc-integrate-ai-related-vars" class="nav-link" data-scroll-target="#integrate-ai-related-vars">Integrate AI-Related Vars</a>
   <ul class="collapse">
   <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
-  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a>
-  <ul class="collapse">
-  <li><a href="#feeling-heard-as-dv" id="toc-feeling-heard-as-dv" class="nav-link" data-scroll-target="#feeling-heard-as-dv">Feeling Heard as DV</a></li>
-  <li><a href="#conversational-engagement-as-dv" id="toc-conversational-engagement-as-dv" class="nav-link" data-scroll-target="#conversational-engagement-as-dv">Conversational Engagement as DV</a></li>
-  </ul></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -202,131 +198,43 @@ dttm  (2): user.start_utc, user.end_utc
 <pre><code>[1] 676  47</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse(data_ext)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>((data_ext))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf
-Warning in FUN(newX[, i], ...): no non-missing arguments to min; returning Inf</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf
-Warning in FUN(newX[, i], ...): no non-missing arguments to max; returning -Inf</code></pre>
-</div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data_ext)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                   vars   n   mean     sd median trimmed    mad min  max range
-user_id*              1 676 338.50 195.29 338.50  338.50 250.56   1  676   675
-con_id                2 676   1.00   0.00   1.00    1.00   0.00   1    1     0
-merged_text*          3 676 338.50 195.29 338.50  338.50 250.56   1  676   675
-finish_both_con       4 676   1.00   0.00   1.00    1.00   0.00   1    1     0
-backup_bot            5 676   0.00   0.00   0.00    0.00   0.00   0    0     0
-user_start_utc        6 676    NaN     NA     NA     NaN     NA Inf -Inf  -Inf
-user_end_utc          7 676    NaN     NA     NA     NaN     NA Inf -Inf  -Inf
-user_name*            8 676 284.33 163.81 278.50  283.39 207.56   1  575   574
-task*                 9 676   1.49   0.50   1.00    1.49   0.00   1    2     1
-partnership*         10 676   1.51   0.50   2.00    1.51   0.00   1    2     1
-label*               11 676   1.52   0.50   2.00    1.52   0.00   1    2     1
-user_priming_text*   12 676 337.57 195.18 337.50  337.50 250.56   1  675   674
-ai_usage             13 676   4.77   1.43   5.00    4.85   1.48   1    7     6
-age                  14 676  44.01  13.13  43.00   43.39  14.83  20   94    74
-gender*              15 676   2.71   1.47   4.00    2.76   0.00   1    4     3
-race*                16 676   5.90   1.81   7.00    6.20   0.00   1    7     6
-education*           17 676   5.04   2.87   4.00    4.90   1.48   1   10     9
-partisanship*        18 676   2.30   1.28   2.00    2.25   1.48   1    4     3
-report_label*        19 676   1.50   0.53   1.00    1.48   0.00   1    3     2
-sense_of_agency      20 676   4.97   1.43   5.00    5.09   1.48   1    7     6
-feeling_heard        21 676   4.84   1.55   5.00    4.97   1.48   1    7     6
-ai_literacy          22 676   5.45   0.99   5.50    5.53   0.74   1    7     6
-religiosity          23 676   3.82   2.04   4.00    3.79   2.97   1    7     6
-con_engage           24 676   4.68   1.47   4.75    4.77   1.85   1    7     6
-soa_1                25 676   5.15   1.66   6.00    5.37   1.48   1    7     6
-soa_2                26 676   4.88   1.73   5.00    5.04   1.48   1    7     6
-soa_3                27 676   5.77   1.40   6.00    6.03   1.48   1    7     6
-soa_4                28 676   4.08   2.10   4.00    4.10   2.97   1    7     6
-fh_1                 29 676   5.15   1.69   6.00    5.38   1.48   1    7     6
-fh_2                 30 676   5.25   1.64   6.00    5.48   1.48   1    7     6
-fh_3                 31 676   4.89   1.74   5.00    5.05   1.48   1    7     6
-fh_4                 32 676   4.07   1.91   4.00    4.09   2.97   1    7     6
-ail_1                33 676   5.33   1.10   5.00    5.41   1.48   1    7     6
-ail_2                34 676   5.37   1.11   6.00    5.45   1.48   1    7     6
-ail_3                35 676   5.63   1.29   6.00    5.82   1.48   1    7     6
-ail_4                36 676   5.48   1.34   6.00    5.66   1.48   1    7     6
-rlg_1                37 676   3.77   2.22   4.00    3.71   2.97   1    7     6
-rlg_2                38 676   3.98   2.23   4.00    3.97   2.97   1    7     6
-rlg_3                39 676   3.58   2.12   4.00    3.47   2.97   1    7     6
-rlg_4                40 676   3.94   2.14   4.00    3.93   2.97   1    7     6
-ce_1                 41 676   4.08   1.89   4.00    4.12   2.97   1    7     6
-ce_2                 42 676   5.05   1.73   6.00    5.26   1.48   1    7     6
-ce_3                 43 676   5.47   1.53   6.00    5.73   1.48   1    7     6
-ce_4                 44 676   4.11   1.97   4.00    4.14   2.97   1    7     6
-turn_count           45 676   8.21   3.19   8.00    7.92   2.97   1   16    15
-report_label_code*   46 676   1.50   0.53   1.00    1.48   0.00   1    3     2
-manipulation_pass    47 676   0.95   0.21   1.00    1.00   0.00   0    1     1
-                    skew kurtosis   se
-user_id*            0.00    -1.21 7.51
-con_id               NaN      NaN 0.00
-merged_text*        0.00    -1.21 7.51
-finish_both_con      NaN      NaN 0.00
-backup_bot           NaN      NaN 0.00
-user_start_utc        NA       NA   NA
-user_end_utc          NA       NA   NA
-user_name*          0.07    -1.19 6.30
-task*               0.04    -2.00 0.02
-partnership*       -0.04    -2.00 0.02
-label*             -0.07    -2.00 0.02
-user_priming_text*  0.00    -1.21 7.51
-ai_usage           -0.54     0.07 0.05
-age                 0.43    -0.31 0.51
-gender*            -0.27    -1.91 0.06
-race*              -1.16    -0.45 0.07
-education*          0.54    -0.98 0.11
-partisanship*       0.37    -1.56 0.05
-report_label*       0.30    -1.26 0.02
-sense_of_agency    -0.73     0.11 0.05
-feeling_heard      -0.67    -0.24 0.06
-ai_literacy        -1.00     1.73 0.04
-religiosity        -0.09    -1.39 0.08
-con_engage         -0.50    -0.46 0.06
-soa_1              -1.00     0.17 0.06
-soa_2              -0.73    -0.39 0.07
-soa_3              -1.64     2.73 0.05
-soa_4              -0.16    -1.37 0.08
-fh_1               -1.00     0.15 0.07
-fh_2               -1.02     0.24 0.06
-fh_3               -0.70    -0.45 0.07
-fh_4               -0.09    -1.12 0.07
-ail_1              -1.09     2.03 0.04
-ail_2              -1.07     1.84 0.04
-ail_3              -1.40     2.29 0.05
-ail_4              -1.32     1.89 0.05
-rlg_1              -0.01    -1.54 0.09
-rlg_2              -0.17    -1.53 0.09
-rlg_3               0.12    -1.39 0.08
-rlg_4              -0.15    -1.38 0.08
-ce_1               -0.20    -1.26 0.07
-ce_2               -0.88    -0.12 0.07
-ce_3               -1.35     1.29 0.06
-ce_4               -0.18    -1.25 0.08
-turn_count          0.69     0.07 0.12
-report_label_code*  0.30    -1.26 0.02
-manipulation_pass  -4.33    16.80 0.01</code></pre>
+<pre><code> [1] "user_id"           "con_id"            "merged_text"      
+ [4] "finish_both_con"   "backup_bot"        "user_start_utc"   
+ [7] "user_end_utc"      "user_name"         "task"             
+[10] "partnership"       "label"             "user_priming_text"
+[13] "ai_usage"          "age"               "gender"           
+[16] "race"              "education"         "partisanship"     
+[19] "report_label"      "sense_of_agency"   "feeling_heard"    
+[22] "ai_literacy"       "religiosity"       "con_engage"       
+[25] "soa_1"             "soa_2"             "soa_3"            
+[28] "soa_4"             "fh_1"              "fh_2"             
+[31] "fh_3"              "fh_4"              "ail_1"            
+[34] "ail_2"             "ail_3"             "ail_4"            
+[37] "rlg_1"             "rlg_2"             "rlg_3"            
+[40] "rlg_4"             "ce_1"              "ce_2"             
+[43] "ce_3"              "ce_4"              "turn_count"       
+[46] "report_label_code" "manipulation_pass"</code></pre>
 </div>
 </div>
 </section>
 <section id="reliability-validity" class="level2">
 <h2 class="anchored" data-anchor-id="reliability-validity">Reliability &amp; Validity</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Descriptive statistics</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Descriptive statistics</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
            Man      Nonbinary Something else          Woman 
            284             11              1            380 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   vars   n  mean    sd median trimmed   mad min max range skew kurtosis   se
 X1    1 676 44.01 13.13     43   43.39 14.83  20  94    74 0.43    -0.31 0.51</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>race) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>race) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
          American Indian or Alaska Native 
@@ -344,13 +252,13 @@ Native Hawaiian or other Pacific Islander
                                     White 
                                0.70710059 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>partisanship) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>partisanship) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Democrat Independent       Other  Republican 
  0.38017751  0.26775148  0.02071006  0.33136095 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>education) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(data_ext<span class="sc">$</span>education) <span class="sc">|&gt;</span> <span class="fu">prop.table</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
                       Associate degree in college - Academic program 
@@ -374,30 +282,30 @@ High school graduate - High school diploma or equivalent (e.g., GED)
                                           Some college but no degree 
                                                           0.16420118 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>ai_usage)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>ai_usage)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   vars   n mean   sd median trimmed  mad min max range  skew kurtosis   se
 X1    1 676 4.77 1.43      5    4.85 1.48   1   7     6 -0.54     0.07 0.05</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>ai_literacy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext<span class="sc">$</span>ai_literacy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   vars   n mean   sd median trimmed  mad min max range skew kurtosis   se
 X1    1 676 5.45 0.99    5.5    5.53 0.74   1   7     6   -1     1.73 0.04</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmatory Factor analysis</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Feeling heard, sense of agency, conversational engagement, AI literacy</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ail =~ ail_1 + ail_2 + ail_3 + ail_4</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># soa =~ soa_1 + soa_2 + soa_3 + soa_4</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>cfa_model <span class="ot">&lt;-</span> <span class="st">'</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="st">  fh =~ fh_1 + fh_2 + fh_3 + fh_4</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ce =~ ce_1 + ce_2 + ce_3 +ce_4</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">cfa</span>(cfa_model, <span class="at">data =</span> data_ext)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Confirmatory Factor analysis</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Feeling heard, sense of agency, conversational engagement, AI literacy</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ail =~ ail_1 + ail_2 + ail_3 + ail_4</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># soa =~ soa_1 + soa_2 + soa_3 + soa_4</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>cfa_model <span class="ot">&lt;-</span> <span class="st">'</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="st">  fh =~ fh_1 + fh_2 + fh_3 + fh_4</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ce =~ ce_1 + ce_2 + ce_3 +ce_4</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">cfa</span>(cfa_model, <span class="at">data =</span> data_ext)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit, <span class="at">fit.measures =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lavaan 0.6-19 ended normally after 35 iterations
 
@@ -484,8 +392,8 @@ Variances:
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reliability</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"fh_1"</span>, <span class="st">"fh_2"</span>, <span class="st">"fh_3"</span>, <span class="st">"fh_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reliability</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"fh_1"</span>, <span class="st">"fh_2"</span>, <span class="st">"fh_3"</span>, <span class="st">"fh_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Reliability analysis   
@@ -520,7 +428,7 @@ fh_2 0.04 0.05 0.06 0.11 0.17 0.34 0.23    0
 fh_3 0.06 0.08 0.07 0.16 0.17 0.29 0.18    0
 fh_4 0.12 0.15 0.08 0.25 0.11 0.17 0.12    0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"soa_1"</span>, <span class="st">"soa_2"</span>, <span class="st">"soa_3"</span>, <span class="st">"soa_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"soa_1"</span>, <span class="st">"soa_2"</span>, <span class="st">"soa_3"</span>, <span class="st">"soa_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Reliability analysis   
@@ -555,7 +463,7 @@ soa_2 0.06 0.08 0.07 0.14 0.21 0.28 0.17    0
 soa_3 0.03 0.02 0.03 0.04 0.18 0.34 0.36    0
 soa_4 0.18 0.13 0.07 0.16 0.11 0.21 0.14    0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"ce_1"</span>, <span class="st">"ce_2"</span>, <span class="st">"ce_3"</span>, <span class="st">"ce_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">alpha</span>(data_ext[, <span class="fu">c</span>(<span class="st">"ce_1"</span>, <span class="st">"ce_2"</span>, <span class="st">"ce_3"</span>, <span class="st">"ce_4"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Reliability analysis   
@@ -590,11 +498,11 @@ ce_2 0.06 0.06 0.05 0.14 0.17 0.31 0.20    0
 ce_3 0.04 0.05 0.03 0.07 0.18 0.38 0.25    0
 ce_4 0.14 0.15 0.08 0.17 0.15 0.20 0.11    0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha(data_ext[, c("ail_1", "ail_2", "ail_3", "ail_4")])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha(data_ext[, c("ail_1", "ail_2", "ail_3", "ail_4")])</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DV statistics</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext[, <span class="fu">c</span>(<span class="st">"feeling_heard"</span>, <span class="st">"sense_of_agency"</span>, <span class="st">"con_engage"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DV statistics</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data_ext[, <span class="fu">c</span>(<span class="st">"feeling_heard"</span>, <span class="st">"sense_of_agency"</span>, <span class="st">"con_engage"</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                vars   n mean   sd median trimmed  mad min max range  skew
 feeling_heard      1 676 4.84 1.55   5.00    4.97 1.48   1   7     6 -0.67
@@ -607,10 +515,10 @@ con_engage         -0.46 0.06</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>HMC <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>partnership <span class="sc">==</span> <span class="st">"HMC"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>bot_labeled <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>label <span class="sc">==</span> <span class="st">"chatbot"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>emotion_task <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>task <span class="sc">==</span> <span class="st">"emotionTask"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dummy variables</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>HMC <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>partnership <span class="sc">==</span> <span class="st">"HMC"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>bot_labeled <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>label <span class="sc">==</span> <span class="st">"chatbot"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>emotion_task <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(data_ext<span class="sc">$</span>task <span class="sc">==</span> <span class="st">"emotionTask"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="main-effect-ols-regression" class="level2">
@@ -630,8 +538,8 @@ con_engage         -0.46 0.06</code></pre>
 <li><p>No 3-way interaction effect. H3 was not supported.</p></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -658,8 +566,8 @@ emotion_task          0.16   0.11     1.42   0.16
 <section id="moderation" class="level2">
 <h2 class="anchored" data-anchor-id="moderation">Moderation</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -682,8 +590,8 @@ emotion_task             0.15   0.11     1.36   0.17
 HMC:bot_labeled          0.65   0.22     2.91   0.00
 ----------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">*</span> emotion_task <span class="sc">+</span> bot_labeled, <span class="at">data =</span> data_ext)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">*</span> emotion_task <span class="sc">+</span> bot_labeled, <span class="at">data =</span> data_ext)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -706,8 +614,8 @@ bot_labeled              -0.29   0.11    -2.62   0.01
 HMC:emotion_task         -0.19   0.22    -0.85   0.40
 -----------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">*</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">*</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -732,21 +640,21 @@ bot_labeled:emotion_task         -0.70   0.22    -3.16   0.00
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Incorrect</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data_ext, </span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co">#        aes(y = con_engage, x = HMC, color = label)) +</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method = "loess", formula = "y ~ x") +</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   # facet_wrap(~label) +</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_bw() +</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   xlab("Partnership") +</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab("Conversational Engagement") +</span></span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(color = "Partner Label")</span></span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_conEngage.jpg", width = 8, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Incorrect</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot(data_ext, </span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co">#        aes(y = con_engage, x = HMC, color = label)) +</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   geom_smooth(method = "loess", formula = "y ~ x") +</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   # facet_wrap(~label) +</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme_bw() +</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   xlab("Partnership") +</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   ylab("Conversational Engagement") +</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   labs(color = "Partner Label")</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_conEngage.jpg", width = 8, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>res_simslopes <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit2, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(res_simslopes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>res_simslopes <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit2, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(res_simslopes)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>JOHNSON-NEYMAN INTERVAL
 
@@ -777,25 +685,25 @@ Slope of HMC when bot_labeled = 1.00 (1):
 ------ ------ -------- ------
   0.74   0.15     4.80   0.00</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> res_simslopes<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Partner Type"</span>) <span class="sc">+</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># p1 &lt;- johnson_neyman(fit2, pred = HMC, modx = bot_labeled, title = "")[3]$plot + </span></span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme(legend.position = "bottom")  # The result is different from sim_slopes function?</span></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit2, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Conversational Engagement"</span>) <span class="sc">+</span> </span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Partner Type"</span>) <span class="sc">+</span></span>
-<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Human"</span>, <span class="st">"AI Chatbot"</span>)) <span class="sc">+</span></span>
-<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> res_simslopes<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Partner Type"</span>) <span class="sc">+</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># p1 &lt;- johnson_neyman(fit2, pred = HMC, modx = bot_labeled, title = "")[3]$plot + </span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   theme(legend.position = "bottom")  # The result is different from sim_slopes function?</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit2, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Conversational Engagement"</span>) <span class="sc">+</span> </span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Partner Type"</span>) <span class="sc">+</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Human"</span>, <span class="st">"AI Chatbot"</span>)) <span class="sc">+</span></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Scale for x is already present.
 Adding another scale for x, which will replace the existing scale.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2 <span class="sc">+</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -803,11 +711,11 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_HMClabel_conEngage.jpg", width = 8, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_HMClabel_conEngage.jpg", width = 8, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>res_simslopes2 <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit4, <span class="at">pred =</span> emotion_task, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(res_simslopes2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>res_simslopes2 <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit4, <span class="at">pred =</span> emotion_task, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(res_simslopes2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>JOHNSON-NEYMAN INTERVAL
 
@@ -838,21 +746,21 @@ Slope of emotion_task when bot_labeled = 1.00 (1):
 ------- ------ -------- ------
   -0.18   0.15    -1.17   0.24</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>p1a <span class="ot">&lt;-</span> res_simslopes2<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Tasks"</span>) <span class="sc">+</span></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>p2b <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit4, <span class="at">pred =</span> emotion_task, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Conversationa Engagement"</span>) <span class="sc">+</span> </span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Task"</span>) <span class="sc">+</span></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Functional"</span>, <span class="st">"Emotional"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>p1a <span class="ot">&lt;-</span> res_simslopes2<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Tasks"</span>) <span class="sc">+</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>p2b <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit4, <span class="at">pred =</span> emotion_task, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Conversationa Engagement"</span>) <span class="sc">+</span> </span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Task"</span>) <span class="sc">+</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Functional"</span>, <span class="st">"Emotional"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Scale for x is already present.
 Adding another scale for x, which will replace the existing scale.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 1
  $ legend.position: chr "bottom"
@@ -860,10 +768,10 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
  - attr(*, "complete")= logi FALSE
  - attr(*, "validate")= logi TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">+</span> p2 <span class="sc">+</span> p1a <span class="sc">+</span> p2b) <span class="sc">+</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>) <span class="sc">+</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>) <span class="sc">&amp;</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>(p1 <span class="sc">+</span> p2 <span class="sc">+</span> p1a <span class="sc">+</span> p2b) <span class="sc">+</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>) <span class="sc">+</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>) <span class="sc">&amp;</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -871,7 +779,7 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_twoInter_conEngage.jpg", width = 10, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ggsave("output/inter_plot_twoInter_conEngage.jpg", width = 10, height = 6, dpi = 300)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="moderated-moderation" class="level2">
@@ -880,9 +788,9 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 <li>Label as a moderator; Task as a moderator’s moderator.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model 3</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Y =</span> <span class="st">"conversational engagement"</span>, <span class="at">X =</span> <span class="st">"partnership"</span>, <span class="at">W =</span> <span class="st">"label"</span>, <span class="at">Z =</span> <span class="st">"task"</span>)</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pmacroModel</span>(<span class="at">no =</span> <span class="dv">3</span>, <span class="at">labels =</span> labels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model 3</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>labels <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">Y =</span> <span class="st">"conversational engagement"</span>, <span class="at">X =</span> <span class="st">"partnership"</span>, <span class="at">W =</span> <span class="st">"label"</span>, <span class="at">Z =</span> <span class="st">"task"</span>)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pmacroModel</span>(<span class="at">no =</span> <span class="dv">3</span>, <span class="at">labels =</span> labels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -892,8 +800,8 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> HMC<span class="sc">:</span>bot_labeled<span class="sc">:</span>emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> HMC<span class="sc">:</span>bot_labeled<span class="sc">:</span>emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -921,10 +829,10 @@ HMC:bot_labeled:emotion_task          0.09   0.22     0.40   0.69
 <ul>
 <li>No moderated moderation. H3 was not supported.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span>  <span class="fu">c</span>(</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="st">"Partnership: HMC"</span> <span class="ot">=</span> <span class="st">"HMC"</span>, <span class="st">"Bot_labeled"</span> <span class="ot">=</span> <span class="st">"bot_labeled"</span>, <span class="st">"Emotion_task"</span> <span class="ot">=</span> <span class="st">"emotion_task"</span>, <span class="st">"HMC × bot_labeled"</span> <span class="ot">=</span> <span class="st">"HMC:bot_labeled"</span>, <span class="st">"HMC × emotion_task"</span> <span class="ot">=</span> <span class="st">"HMC:emotion_task"</span>, <span class="st">"Bot_labeled × emotion_task"</span> <span class="ot">=</span> <span class="st">"bot_labeled:emotion_task"</span>, <span class="st">"HMC × bot_labeled × emotion_task"</span> <span class="ot">=</span> <span class="st">"HMC:bot_labeled:emotion_task"</span>, <span class="st">"Constant"</span> <span class="ot">=</span> <span class="st">"(Intercept)"</span>)</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>jtools<span class="sc">::</span><span class="fu">export_summs</span>(fit1, fit2, fit3, fit4, fit5, <span class="at">robust =</span> <span class="st">"HC3"</span>, <span class="at">coefs =</span> coef_names, <span class="at">to.file =</span> <span class="st">"xlsx"</span>, <span class="at">file.name =</span> <span class="st">"output/main&amp;2way_conEngage.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>coef_names <span class="ot">&lt;-</span>  <span class="fu">c</span>(</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="st">"Partnership: HMC"</span> <span class="ot">=</span> <span class="st">"HMC"</span>, <span class="st">"Bot_labeled"</span> <span class="ot">=</span> <span class="st">"bot_labeled"</span>, <span class="st">"Emotion_task"</span> <span class="ot">=</span> <span class="st">"emotion_task"</span>, <span class="st">"HMC × bot_labeled"</span> <span class="ot">=</span> <span class="st">"HMC:bot_labeled"</span>, <span class="st">"HMC × emotion_task"</span> <span class="ot">=</span> <span class="st">"HMC:emotion_task"</span>, <span class="st">"Bot_labeled × emotion_task"</span> <span class="ot">=</span> <span class="st">"bot_labeled:emotion_task"</span>, <span class="st">"HMC × bot_labeled × emotion_task"</span> <span class="ot">=</span> <span class="st">"HMC:bot_labeled:emotion_task"</span>, <span class="st">"Constant"</span> <span class="ot">=</span> <span class="st">"(Intercept)"</span>)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>jtools<span class="sc">::</span><span class="fu">export_summs</span>(fit1, fit2, fit3, fit4, fit5, <span class="at">robust =</span> <span class="st">"HC3"</span>, <span class="at">coefs =</span> coef_names, <span class="at">to.file =</span> <span class="st">"xlsx"</span>, <span class="at">file.name =</span> <span class="st">"output/main&amp;2way_conEngage.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="huxtable" data-quarto-disable-processing="true" style="margin-left: auto; margin-right: auto;">
 <colgroup><col><col><col><col><col><col></colgroup><thead>
 <tr>
@@ -979,9 +887,10 @@ HMC:bot_labeled:emotion_task          0.09   0.22     0.40   0.69
 <li>DV: Conversational Engagement</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># a path</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>fit6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit6)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Traditional way: 3-step</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># a path</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>fit6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit6)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1003,8 +912,8 @@ bot_labeled          -0.19   0.12    -1.61   0.11
 emotion_task          0.13   0.12     1.14   0.25
 -------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>fit7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC<span class="sc">*</span>bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit7)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>fit7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC<span class="sc">*</span>bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit7)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1027,9 +936,9 @@ emotion_task             0.13   0.12     1.09   0.28
 HMC:bot_labeled          0.61   0.23     2.65   0.01
 ----------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># b, c' path</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>fit8 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> feeling_heard, <span class="at">data =</span> data_ext)</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit8)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># b, c' path</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fit8 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> feeling_heard, <span class="at">data =</span> data_ext)</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit8)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1052,8 +961,8 @@ emotion_task           0.06   0.07     0.85   0.40
 feeling_heard          0.76   0.02    33.26   0.00
 --------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>fit9 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC<span class="sc">*</span>bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> feeling_heard, <span class="at">data =</span> data_ext)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit9)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>fit9 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC<span class="sc">*</span>bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> feeling_heard, <span class="at">data =</span> data_ext)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fit9)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1077,8 +986,8 @@ feeling_heard            0.75   0.02    32.98   0.00
 HMC:bot_labeled          0.18   0.14     1.33   0.18
 ----------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">export_summs</span>(fit6, fit7, fit8, fit9, </span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">robust =</span> <span class="st">"HC3"</span>, <span class="at">to.file =</span> <span class="st">"xlsx"</span>, <span class="at">file.name =</span> <span class="st">"output/ce&amp;fh.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">export_summs</span>(fit6, fit7, fit8, fit9, </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">robust =</span> <span class="st">"HC3"</span>, <span class="at">to.file =</span> <span class="st">"xlsx"</span>, <span class="at">file.name =</span> <span class="st">"output/ce&amp;fh.xlsx"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="huxtable" data-quarto-disable-processing="true" style="margin-left: auto; margin-right: auto;" id="tab:medModels-feeling_heard">
 <colgroup><col><col><col><col><col></colgroup><thead>
@@ -1124,24 +1033,24 @@ HMC:bot_labeled          0.18   0.14     1.33   0.18
 <li>Conduct simple slope analysis on the interaction effect of partnership (a.k.a., partner types) and partner labels over feeling heard.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>res_simslopes3 <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit7, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="co"># print(res_simslopes3)</span></span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> res_simslopes3<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Partner Type"</span>) <span class="sc">+</span></span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span>
-<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit7, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
-<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
-<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Feeling Heard"</span>) <span class="sc">+</span> </span>
-<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Partner Type"</span>) <span class="sc">+</span></span>
-<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Human"</span>, <span class="st">"AI Chatbot"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>res_simslopes3 <span class="ot">&lt;-</span> <span class="fu">sim_slopes</span>(fit7, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="co"># print(res_simslopes3)</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>p5 <span class="ot">&lt;-</span> res_simslopes3<span class="sc">$</span>jnplot <span class="sc">+</span> </span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">""</span>, <span class="at">x =</span> <span class="st">"Partner Label"</span>, <span class="at">y =</span> <span class="st">"Slope of Partner Type"</span>) <span class="sc">+</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>p6 <span class="ot">&lt;-</span> <span class="fu">interact_plot</span>(fit7, <span class="at">pred =</span> HMC, <span class="at">modx =</span> bot_labeled, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">modx.values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>), <span class="at">modx.labels =</span> <span class="fu">c</span>(<span class="st">"AI Chatbot Label"</span>, <span class="st">"Human Label"</span>), <span class="at">legend.main =</span> <span class="st">""</span>, <span class="at">colors =</span> <span class="st">"CUD"</span>) <span class="sc">+</span></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_apa</span>() <span class="sc">+</span> </span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Feeling Heard"</span>) <span class="sc">+</span> </span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Partner Type"</span>) <span class="sc">+</span></span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Human"</span>, <span class="st">"AI Chatbot"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Scale for x is already present.
 Adding another scale for x, which will replace the existing scale.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 1
  $ legend.position: chr "right"
@@ -1149,9 +1058,9 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
  - attr(*, "complete")= logi FALSE
  - attr(*, "validate")= logi TRUE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>p5 <span class="sc">+</span> p6 <span class="sc">+</span></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>) <span class="sc">+</span></span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>p5 <span class="sc">+</span> p6 <span class="sc">+</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>) <span class="sc">+</span></span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1159,22 +1068,22 @@ Adding another scale for x, which will replace the existing scale.</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"output/inter_plot_HMClabel_feelHeard.jpg"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"output/inter_plot_HMClabel_feelHeard.jpg"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Next, Use the <code>mediation</code> package developed by Imai et al.&nbsp;(2010) to examine mediation and moderated mediation.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Overall mediation of feeling heard</span></span>
-<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>med_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>out_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> feeling_heard <span class="sc">+</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>med_overall <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Overall mediation of feeling heard</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>med_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>out_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> feeling_heard <span class="sc">+</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>med_overall <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Running nonparametric bootstrap</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_overall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_overall)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Causal Mediation Analysis 
@@ -1206,17 +1115,17 @@ Simulations: 10000 </code></pre>
 <li>Label as a moderator, feeling heard as a mediator.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Moderated mediation</span></span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>med_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>out_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> feeling_heard <span class="sc">+</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> feeling_heard <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a><span class="co"># covariates refer to levels of moderators</span></span>
-<span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>med_botLabel <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">bot_labeled=</span><span class="dv">1</span>), <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Moderated mediation</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>med_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>out_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> feeling_heard <span class="sc">+</span> HMC <span class="sc">*</span> bot_labeled <span class="sc">+</span> feeling_heard <span class="sc">*</span> bot_labeled <span class="sc">+</span> emotion_task, <span class="at">data =</span> data_ext)</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="co"># covariates refer to levels of moderators</span></span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>med_botLabel <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">bot_labeled=</span><span class="dv">1</span>), <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Running nonparametric bootstrap</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_botLabel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_botLabel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Causal Mediation Analysis 
@@ -1238,11 +1147,11 @@ Sample Size Used: 676
 
 Simulations: 10000 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>med_humanLabel <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">bot_labeled=</span><span class="dv">0</span>), <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>med_humanLabel <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">covariates =</span> <span class="fu">list</span>(<span class="at">bot_labeled=</span><span class="dv">0</span>), <span class="at">sims =</span> <span class="dv">10000</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.ci.type =</span> <span class="st">"bca"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Running nonparametric bootstrap</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_humanLabel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(med_humanLabel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Causal Mediation Analysis 
@@ -1271,10 +1180,10 @@ Simulations: 10000 </code></pre>
 <li><p>Labels moderated the indirect effect of partnership on con engagement via feeling heard. H5 was supported.</p></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Difference between con engagement among two levels of labels (no need actually)</span></span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>med_init <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">sims =</span> <span class="dv">2</span>)</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="fu">test.modmed</span>(med_init, <span class="at">covariates.1 =</span> <span class="fu">list</span>(<span class="at">bot_labeled =</span> <span class="dv">1</span>), <span class="at">covariates.2 =</span> <span class="fu">list</span>(<span class="at">bot_labeled =</span> <span class="dv">0</span>), <span class="at">sims =</span> <span class="dv">10000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Difference between con engagement among two levels of labels (no need actually)</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>med_init <span class="ot">&lt;-</span> <span class="fu">mediate</span>(med_fit, out_fit, <span class="at">treat =</span> <span class="st">"HMC"</span>, <span class="at">mediator =</span> <span class="st">"feeling_heard"</span>, <span class="at">sims =</span> <span class="dv">2</span>)</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="fu">test.modmed</span>(med_init, <span class="at">covariates.1 =</span> <span class="fu">list</span>(<span class="at">bot_labeled =</span> <span class="dv">1</span>), <span class="at">covariates.2 =</span> <span class="fu">list</span>(<span class="at">bot_labeled =</span> <span class="dv">0</span>), <span class="at">sims =</span> <span class="dv">10000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Test of ACME(covariates.1) - ACME(covariates.2) = 0
@@ -1306,12 +1215,12 @@ alternative hypothesis: true ADE(covariates.1) - ADE(covariates.2) is not equal 
 <section id="correlation" class="level2">
 <h2 class="anchored" data-anchor-id="correlation">Correlation</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vars: ai_usage, ai_literacy, feeling_heard, con_engage</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>num_vars <span class="ot">&lt;-</span> data_ext[, <span class="fu">c</span>(<span class="st">"ai_usage"</span>, <span class="st">"ai_literacy"</span>, <span class="st">"feeling_heard"</span>, <span class="st">"con_engage"</span>)]</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>cor_res <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">corr.test</span>(num_vars)</span>
-<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_res, <span class="at">short =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vars: ai_usage, ai_literacy, feeling_heard, con_engage</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>num_vars <span class="ot">&lt;-</span> data_ext[, <span class="fu">c</span>(<span class="st">"ai_usage"</span>, <span class="st">"ai_literacy"</span>, <span class="st">"feeling_heard"</span>, <span class="st">"con_engage"</span>)]</span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>cor_res <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">corr.test</span>(num_vars)</span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(cor_res, <span class="at">short =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:psych::corr.test(x = num_vars)
 Correlation matrix 
@@ -1338,15 +1247,15 @@ a_ltr-flng_      0.23  0.30      0.36     0      0.21      0.38
 a_ltr-cn_ng      0.22  0.29      0.36     0      0.20      0.37
 flng_-cn_ng      0.76  0.79      0.82     0      0.75      0.83</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># viz</span></span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">as.matrix</span>(cor_res<span class="sc">$</span>r), </span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"color"</span>, </span>
-<span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"upper"</span>, </span>
-<span id="cb96-5"><a href="#cb96-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">"hclust"</span>, </span>
-<span id="cb96-6"><a href="#cb96-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.cex =</span> <span class="fl">0.8</span>,</span>
-<span id="cb96-7"><a href="#cb96-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>,</span>
-<span id="cb96-8"><a href="#cb96-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.srt =</span> <span class="dv">0</span></span>
-<span id="cb96-9"><a href="#cb96-9" aria-hidden="true" tabindex="-1"></a>         )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># viz</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(<span class="fu">as.matrix</span>(cor_res<span class="sc">$</span>r), </span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">"color"</span>, </span>
+<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">type =</span> <span class="st">"upper"</span>, </span>
+<span id="cb94-5"><a href="#cb94-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">"hclust"</span>, </span>
+<span id="cb94-6"><a href="#cb94-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.cex =</span> <span class="fl">0.8</span>,</span>
+<span id="cb94-7"><a href="#cb94-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col =</span> <span class="st">"black"</span>,</span>
+<span id="cb94-8"><a href="#cb94-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.srt =</span> <span class="dv">0</span></span>
+<span id="cb94-9"><a href="#cb94-9" aria-hidden="true" tabindex="-1"></a>         )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1366,17 +1275,17 @@ flng_-cn_ng      0.76  0.79      0.82     0      0.75      0.83</code></pre>
 </ul></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean centering: Mean-centered moderators to make it explainable readily</span></span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>ai_usage_c <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_ext<span class="sc">$</span>ai_usage, <span class="at">center =</span> T, <span class="at">scale =</span> F)</span>
-<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>ai_literacy_c <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_ext<span class="sc">$</span>ai_literacy, <span class="at">center =</span> T, <span class="at">scale =</span> F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean centering: Mean-centered moderators to make it explainable readily</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>ai_usage_c <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_ext<span class="sc">$</span>ai_usage, <span class="at">center =</span> T, <span class="at">scale =</span> F)</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>data_ext<span class="sc">$</span>ai_literacy_c <span class="ot">&lt;-</span> <span class="fu">scale</span>(data_ext<span class="sc">$</span>ai_literacy, <span class="at">center =</span> T, <span class="at">scale =</span> F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="feeling-heard-as-dv" class="level3">
 <h3 class="anchored" data-anchor-id="feeling-heard-as-dv">Feeling Heard as DV</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feeling_heard as dv</span></span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>fitA <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># feeling_heard as dv</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>fitA <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1402,9 +1311,9 @@ ai_literacy_c          0.47   0.07     6.75   0.00
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction: AI usage as a moderator</span></span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>fitB1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy <span class="sc">+</span> HMC<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Interaction: AI usage as a moderator</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>fitB1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy <span class="sc">+</span> HMC<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1429,8 +1338,8 @@ ai_literacy             0.47   0.07     6.69   0.00
 HMC:ai_usage_c         -0.05   0.08    -0.61   0.54
 ---------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>fitB2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>fitB2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1455,8 +1364,8 @@ ai_literacy                     0.47   0.07     6.72   0.00
 bot_labeled:ai_usage_c          0.06   0.08     0.82   0.41
 -----------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>fitB3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>fitB3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitB3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1483,9 +1392,9 @@ emotion_task:ai_usage_c          0.03   0.08     0.45   0.66
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction: AI literacy as a moderator</span></span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>fitC1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy <span class="sc">+</span> HMC<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interaction: AI literacy as a moderator</span></span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>fitC1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy <span class="sc">+</span> HMC<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1510,8 +1419,8 @@ ai_literacy                0.43   0.08     5.14   0.00
 HMC:ai_literacy_c          0.10   0.12     0.88   0.38
 ------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>fitC2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>fitC2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1536,8 +1445,8 @@ ai_literacy                        0.39   0.09     4.28   0.00
 bot_labeled:ai_literacy_c          0.17   0.11     1.48   0.14
 --------------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>fitC3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>fitC3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(feeling_heard <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage <span class="sc">+</span> ai_literacy <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitC3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1570,9 +1479,9 @@ emotion_task:ai_literacy_c          0.05   0.11     0.47   0.64
 <section id="conversational-engagement-as-dv" class="level3">
 <h3 class="anchored" data-anchor-id="conversational-engagement-as-dv">Conversational Engagement as DV</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># con_engage as dv</span></span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>fitD <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitD)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co"># con_engage as dv</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>fitD <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitD)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1598,9 +1507,9 @@ ai_literacy_c          0.47   0.07     6.96   0.00
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactions: AI usage as a moderator</span></span>
-<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a>fitE1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> HMC<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactions: AI usage as a moderator</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>fitE1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> HMC<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1625,8 +1534,8 @@ ai_literacy_c           0.47   0.07     6.92   0.00
 HMC:ai_usage_c         -0.02   0.08    -0.22   0.83
 ---------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>fitE2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>fitE2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1651,8 +1560,8 @@ ai_literacy_c                   0.47   0.07     6.93   0.00
 bot_labeled:ai_usage_c          0.07   0.08     0.98   0.33
 -----------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>fitE3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>fitE3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_usage_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitE3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1679,9 +1588,9 @@ emotion_task:ai_usage_c          0.00   0.08     0.03   0.97
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactions: AI literacy as a moderator</span></span>
-<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>fitF1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> HMC<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactions: AI literacy as a moderator</span></span>
+<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>fitF1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> HMC<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1706,8 +1615,8 @@ ai_literacy_c              0.44   0.08     5.45   0.00
 HMC:ai_literacy_c          0.07   0.11     0.64   0.52
 ------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>fitF2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>fitF2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> bot_labeled<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
@@ -1732,8 +1641,8 @@ ai_literacy_c                      0.39   0.09     4.49   0.00
 bot_labeled:ai_literacy_c          0.15   0.11     1.41   0.16
 --------------------------------------------------------------</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>fitF3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
-<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>fitF3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(con_engage <span class="sc">~</span> HMC <span class="sc">+</span> bot_labeled <span class="sc">+</span> emotion_task <span class="sc">+</span> ai_usage_c <span class="sc">+</span> ai_literacy_c <span class="sc">+</span> emotion_task<span class="sc">:</span>ai_literacy_c, <span class="at">data =</span> data_ext)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summ</span>(fitF3)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MODEL INFO:
 Observations: 676
