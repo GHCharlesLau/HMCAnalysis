@@ -4,6 +4,7 @@ author: "Charles"
 format: html
 chunk_output_type: inline
 toc: true
+toc-depth: 2
 ---
 
 # Examining Effects of HMC and Labels on Feeling Heard and Conversational Engagement
@@ -71,7 +72,7 @@ data_ext <- data |>
 
 dim(data_ext)
 # glimpse(data_ext)
-describe((data_ext))
+colnames(data_ext)
 ```
 
 ## Reliability & Validity
