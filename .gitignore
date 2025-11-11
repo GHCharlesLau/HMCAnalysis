@@ -5,3 +5,10 @@
 
 /.quarto/
 **/*.quarto_ipynb
+
+HMCvsHHC.qmd
+HMCvsHHC_files/
+_quarto.yml
+output/
+process.R
+workspace.RData
